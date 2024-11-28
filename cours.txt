@@ -1,0 +1,11 @@
+data engineer => data analyst => data scientist ::::: Technique
+
+
+verifier les sources
+
+
+AMOA => chef d eprojet fonction
+
+AMOE => exécutif
+
+=> ETL pour les big data
