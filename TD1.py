@@ -135,7 +135,8 @@ def haversine(lat1, lon1, lat2, lon2):
  
 from functools import lru_cache
 # Étape 6 : Trouver les stations concurrentes dans un rayon de 10 km
-st.header("La liste des stations concurrentes dans un rayon de 10 km")
+# st.header("La liste des stations concurrentes dans un rayon de 10 km")
+
 
 @st.cache_data
 def calculate_competitors(carrefour_coords, other_coords):
@@ -215,8 +216,10 @@ selected_date = "2024-02-01"
 results_df = compare_prices(selected_date, carrefour_stations, prices, competitors_dict)
 
 # Affichage des résultats
-st.dataframe(results_df)
+# st.dataframe(results_df)
+
  
+
 
 # Step 8
 # Visualisation des résultats (Étape 8) 
@@ -291,6 +294,28 @@ df_pivoted_enseigne = grouped_by_enseigne.melt(
 # Filtrer les données pour le produit sélectionné
 # df_filtered_enseigne = df_pivoted_enseigne[df_pivoted_enseigne["Produit"] == selected_product]
 
+# Sidebar for Filters
+st.sidebar.header("Filtres")
+available_dates = prices["Date"].unique()
+selected_date = st.sidebar.selectbox("Sélectionnez une date", sorted(available_dates), key="select_date_sidebar")
+
+list_product_ = ['Gazole', 'SP95', 'SP98', 'E10', 'E85', 'GPLc']
+selected_product = st.sidebar.selectbox("Sélectionnez un produit", list_product_)
+
+# Filtrer les stations Carrefour pour un ID spécifique
+carrefour_ids = carrefour_stations["ID"].unique()
+selected_carrefour_id = st.sidebar.selectbox(
+    "Sélectionnez une station Carrefour",
+    carrefour_ids,
+    format_func=lambda x: f"ID: {x} - {carrefour_stations[carrefour_stations['ID'] == x]['Ville'].iloc[0]}"
+)
+
+# Filtre pour plage de dates (dans la sidebar)
+start_date = st.sidebar.date_input("Date de début", value=pd.to_datetime("2024-01-01"))
+end_date = st.sidebar.date_input("Date de fin", value=pd.to_datetime("2024-02-20"))
+
+
+
 
 ## KPI
 
@@ -315,7 +340,7 @@ def calculate_avg_price(df, selected_date, product_column, enseignes_list):
     return avg_prices
 
 # Étape 2 : Créer un widget pour sélectionner la date
-st.title("Indicateurs Clés de Performance par Enseigne KPI ( Calculez le prix moyen )")
+st.title("KPI ( Calculez le prix moyen )")
 
 # Liste des enseignes pré-calculées à partir de l'étape précédente
 enseignes_list = ['Carrefour', 'Auchan', 'E.Leclerc', 'Total Access', 'Intermarché', 'Super U']
@@ -565,7 +590,7 @@ with col1:
 
 # Sélecteur de date dans la deuxième colonne
 with col2:
-    end_date = st.date_input("Sélectionnez la date de fin", min_value=min(available_dates_), max_value=max(available_dates_))
+    end_date = st.date_input("Sélectionnez la date de fin", min_value=min(available_dates_), max_value=max(available_dates_),value=pd.to_datetime("2024-02-20"))
 
 # Affichage des dates sélectionnées
 st.write("Date de début :", start_date)
