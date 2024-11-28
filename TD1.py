@@ -590,7 +590,7 @@ with col1:
 
 # Sélecteur de date dans la deuxième colonne
 with col2:
-    end_date = st.date_input("Sélectionnez la date de fin", min_value=min(available_dates_), max_value=max(available_dates_),value=pd.to_datetime("2024-02-20"))
+    end_date = st.date_input("Sélectionnez la date de fin", min_value=min(available_dates_), max_value=max(available_dates_))
 
 # Affichage des dates sélectionnées
 st.write("Date de début :", start_date)
